@@ -90,3 +90,22 @@ def submit():
 def entries():
   conn = sqlite3.connect(DB_PATH)
   conn.row_factory = sqlite3.Row
+  c = conn.cursor()
+  c.execute('SELECCT * FROM entries')
+  rows = c.fetchall()
+  conn.close()
+
+  return jsonify([dict(row) for row in rows])
+
+@app.route('/exportcsv')
+def export_csv():
+  # TO DO: implement CSV export
+  return "CSV export wip", 200
+
+@app.route('/healthz')
+def health():
+  return "OK", 200
+
+if __name__ == '__main__':
+  port = int(os.environ.get('PORT', 8080))
+  app.run(host='0.0.0.0', port=port, debug=True)
