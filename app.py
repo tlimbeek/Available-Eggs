@@ -35,3 +35,58 @@ def init_db():
   )
 ''')
   conn.commit()
+  conn.close()
+
+# Initialize DB on startup
+init_db()
+
+@app.route('/')
+def index():
+  return render_template('form.html')
+
+@app.route('/submit', methods=['POST'])
+def submit():
+  data = request.json
+
+  # Basic validation (you'll expand this)
+  required = ['farm_name', 'contact', 'location', 'egg_type', 'size', 'grade', 'pack', 'quatity_value', 'quantity_unit']
+  for field in required:
+    if not data.get(field):
+      return jsonify({'error': f'{field} is required'}), 400
+
+  # Generate UUID
+  entry_id = str(uuid.uuid4())
+
+  # Save to database
+  conn = sqlite3.connect(DB_PATH)
+  c = conn.cursor()
+  c.execute('''
+      INSERT INTO entries VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  ''', (
+    entry_id,
+    data.get('farm_name'),
+    data.get('contact'),
+    data.get('phone'),
+    data.get('email'),
+    data.get('location'),
+    data.get('egg_type'),
+    data.get('size'),
+    data.get('grade'),
+    data.get('pack'),
+    data.get('quantity_value')
+    data.get('quantity_unit'),
+    data.get('price_per_dozen'),
+    data.get('available_start'),
+    data.get('available_end'),
+    data.get('notes'),
+    datetime.now().isoformat()
+  ))
+  conn.commit()
+  conn.close()
+
+  return jsonify({'id: entry_id})
+
+@app.route('/entries')
+def entries():
+  conn = sqlite3.connect(DB_PATH)
+  conn.row_factory = sqlite3.Row
