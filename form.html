@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Egg Availability Form</title>
+</head>
+<body>
+  <h1>Available Eggs Entry Form</h1>
+  <form id="eggForm">
+    <h2>Farm Information</h2>
+    <label>Farm Name: <input type="text" name="farm_name" required></label><br>
+    <label>Contact Person: <input type="text" name="contact" required></label><br>
+    <label>Phone: <input type="tel" name="phone"></label><br>
+    <label>Email: <input type="email" name="email"></label><br>
+    <label>Location (ZIP/City): <input type="text" name="location" required></label><br>
+
+    <h2>Egg Details</h2>
+    <label>Type:
+      <select name="egg_type" required>
+        <option value="">Select...</option>
+        <option value="Conventional">Conventional</option>
+        <option value="CageFree">Cage Free</option>
+        <option value="FreeRange">Free Range</option>
+        <option value="Organic">Organic</option>
+      </select>  
+    </label><br>
+
+    <label>Size:
+      <select name="size" required>
+        <option value="">Select...</option>
+        <option value="Medium">Medium</option>
+        <option value="Large">Large</option>
+        <option value="XLarge">X-Large</option>
+        <option value="Jumbo">Jumbo</option>
+      </select>
+    </label><br>
+
+    <label>Grade:
+      <select name="grade" required>
+        <option value="">Select...</option>
+        <option value="AA">AA</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+      </select>
+    </label><br>
+
+    <label>Pack:
+      <select name="pack" required>
+        <option value="">Select...</option>
+        <option value="12ct_carton">12ct Carton</option>
+        <option value="18ct_carton">18ct Carton</option>
+        <option value="24ct_tray">24ct Tray</option>
+        <option value="30dozen_case">30 Dozen Case</option>
+      </select>
+    </label><br>
+
+    <label>Quantity Value: <input type="number" name="quantity_value" step="0.01" required></label><br>
+    <label>Quantity Unit: <input type="text" name="quantity_unit" required placeholder="e.g. cases, trays"></label><br>
+    <!--Check if price should be required-->
+    <label>Price per Dozen: <input type="number" name="price_per_dozen" step="0.01" required></label><br>
+
+    <h2>Availability</h2>
+    <label>Available Start: <input type="date" name="available_start"></label><br>
+    <label>Available End: <input type="date" name="available_end"></label><br>
+
+    <label>Notes: <textarea name="notes" rows="3"></textarea></label><br>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="message"></div>
+
+  <script>
+    document.getElementByID('eggForm'
+  </script>
+
+</body>
+</html>
