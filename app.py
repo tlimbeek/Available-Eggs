@@ -42,6 +42,11 @@ def init_db():
 # Initialize DB on startup
 init_db()
 
+@app.after_request
+def log_request(response):
+  print(f"{request.method} {request.path} {response.status_code}")
+  return response
+
 @app.route('/')
 def index():
   return render_template('form.html')
@@ -50,11 +55,20 @@ def index():
 def submit():
   data = request.json
 
-  # Basic validation (you'll expand this)
-  required = ['farm_name', 'contact', 'location', 'egg_type', 'size', 'grade', 'pack', 'quantity_value', 'quantity_unit']
-  for field in required:
+  required = {
+    'farm_name': 'Farm Name',
+    'contact': 'Contact Person',
+    'location': 'Location',
+    'egg_type': 'Egg Type',
+    'size': 'Size',
+    'grade': 'Grade',
+    'pack': 'Pack',
+    'quantity_value': 'Quantity Value',
+    'quantity_unit': 'Quantity Unit'
+  }
+  for field, label in required.items():
     if not data.get(field):
-      return jsonify({'error': f'{field} is required'}), 400
+      return jsonify({'error': f'{label} is required'}), 400
 
   # Generate UUID
   entry_id = str(uuid.uuid4())
