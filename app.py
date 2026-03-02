@@ -21,7 +21,7 @@ def init_db():
       phone TEXT,
       email TEXT,
       location TEXT NOT NULL,
-      egg_type TEXT NOT NULLL,
+      egg_type TEXT NOT NULL,
       size TEXT NOT NULL,
       grade TEXT NOT NULL,
       pack TEXT NOT NULL,
@@ -49,7 +49,7 @@ def submit():
   data = request.json
 
   # Basic validation (you'll expand this)
-  required = ['farm_name', 'contact', 'location', 'egg_type', 'size', 'grade', 'pack', 'quatity_value', 'quantity_unit']
+  required = ['farm_name', 'contact', 'location', 'egg_type', 'size', 'grade', 'pack', 'quantity_value', 'quantity_unit']
   for field in required:
     if not data.get(field):
       return jsonify({'error': f'{field} is required'}), 400
@@ -73,7 +73,7 @@ def submit():
     data.get('size'),
     data.get('grade'),
     data.get('pack'),
-    data.get('quantity_value')
+    data.get('quantity_value'),
     data.get('quantity_unit'),
     data.get('price_per_dozen'),
     data.get('available_start'),
@@ -84,14 +84,14 @@ def submit():
   conn.commit()
   conn.close()
 
-  return jsonify({'id: entry_id})
+  return jsonify({'id': entry_id})
 
 @app.route('/entries')
 def entries():
   conn = sqlite3.connect(DB_PATH)
   conn.row_factory = sqlite3.Row
   c = conn.cursor()
-  c.execute('SELECCT * FROM entries')
+  c.execute('SELECT * FROM entries')
   rows = c.fetchall()
   conn.close()
 
