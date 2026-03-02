@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request, jsonify, send_file
+from flask import Flask, render_template, request, jsonify, send_file, Response
 import sqlite3
 import uuid
 import os
+import csv
+import io
 from datetime import datetime
 
 app = Flask(__name__)
@@ -99,8 +101,27 @@ def entries():
 
 @app.route('/exportcsv')
 def export_csv():
-  # TO DO: implement CSV export
-  return "CSV export wip", 200
+  conn = sqlite3.connect(DB_PATH)
+  conn.row_factory = sqlite3.Row
+  c = conn.cursor()
+  c.execute('SELECT * FROM entries')
+  rows = c.fetchall()
+  conn.close()
+
+  output = io.StringIO()
+  writer = csv.writer(output)
+  writer.writerow(['id', 'farm_name', 'contact', 'phone', 'email', 'location',
+                   'egg_type', 'size', 'grade', 'pack', 'quantity_value',
+                   'quantity_unit', 'price_per_dozen', 'available_start',
+                   'available_end', 'notes', 'created_at'])
+  for row in rows:
+    writer.writerow(list(row))
+
+  return Response(
+    output.getvalue(),
+    mimetype='text/csv',
+    headers={'Content-Disposition': 'attachment; filename=export.csv'}
+  )
 
 @app.route('/healthz')
 def health():
